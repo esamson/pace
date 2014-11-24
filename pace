@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# Usage: pace <command>
+#
+# Execute a command and push a notification to Pushbullet when it finishes.
+
+tokenfile="$HOME/.pace_token"
+if [ ! -e "$tokenfile" ] ; then
+    CLIENT_ID=fpYTsqYDG8GYQg1PkndrZ4JZPKV39egi
+    REDIRECT_URI="https%3A%2F%2Fesamson.github.io%2Fpace%2F%3Ftokenfile%3D$tokenfile"
+    OAUTH_URL="https://www.pushbullet.com/authorize?client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&response_type=token&scope=everything"
+    echo
+    echo "Pushbullet access token not found in $tokenfile"
+    echo
+    echo "If your browser did not open automatically, open the following"
+    echo " URL and proceed with the authorization instructions there."
+    echo
+    echo "$OAUTH_URL"
+    echo
+    echo "You should save your access token in $tokenfile"
+
+    if [ "$(uname)" == "Darwin" ] ; then
+        open "$OAUTH_URL"
+    elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ] ; then
+        xdg-open "$OAUTH_URL"
+    fi
+    
+    exit 1
+fi
+token="$(<$tokenfile)"
+
+COMMAND=$*
+echo $COMMAND
+
+START=$(date +"%s")
+(eval $COMMAND)
+END=$(date +"%s")
+SECONDS=$(($END-$START))
+TIME="$(($SECONDS / 60)) min $(($SECONDS % 60)) sec"
+
+EXITCODE=$?
+if [ $EXITCODE -eq 0 ] ; then
+    curl -u $token: https://api.pushbullet.com/v2/pushes -d type=note -d title="$1 SUCCESS ($TIME)" -d body="$COMMAND" > /dev/null 2>&1 &
+else
+    curl -u $token: https://api.pushbullet.com/v2/pushes -d type=note -d title="$1 FAIL ($TIME)" -d body="$COMMAND" > /dev/null 2>&1 &
+fi
+
