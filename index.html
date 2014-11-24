@@ -16,7 +16,7 @@
     <header>
       <div class="container">
         <h1>pace</h1>
-        <h2>Keeps an eye on long-running commands for you. Notifies you via Pushbullet.</h2>
+        <h2>Keeps an eye on long-running commands for you. Notifies you via <a href="https://www.pushbullet.com/">Pushbullet</a>.</h2>
 
         <section id="downloads">
           <a href="https://github.com/esamson/pace/zipball/master" class="btn">Download as .zip</a>
@@ -28,7 +28,16 @@
 
     <div class="container">
       <section id="main_content">
-        <p>Keeps an eye on long-running commands for you. Notifies you via <a href="https://www.pushbullet.com/">Pushbullet</a>.</p>
+        <p>Just add <code>pace</code> to your $PATH. The first time
+        <code>pace</code> is run, you will be given instructions for
+        authorizing it to push notifications to your Pushbullet account.
+        Once authorized, just prepend any command with
+        <code>pace</code>:</p>
+
+        <pre>$ pace make</pre>
+
+        <p>This executes <code>make</code> and sends a Pushbullet
+        notification once execution finishes.</p>
       </section>
     </div>
 
