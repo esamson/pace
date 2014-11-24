@@ -6,7 +6,6 @@
 
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
     <title>pace by esamson</title>
   </head>
@@ -41,6 +40,26 @@
       </section>
     </div>
 
-    
+    <script>
+    function getURLParam(sVar) {
+        return decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(sVar).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+    }
+
+    function getAccessToken() {
+        var hParam = window.location.hash.split("=");
+        if (hParam[0] === '#access_token') {
+            return hParam[1];
+            } else {
+            return '';
+        }
+    }
+
+    var tokenFile = getURLParam("tokenFile");
+    var accessToken = getAccessToken();
+    if (tokenFile && accessToken) {
+        document.getElementById("main_content").innerHTML =
+        "<p>Run the following in your terminal to authorize <code>pace</code>:</p><pre>echo '" + accessToken + "' > " + tokenFile + "</pre>";
+    }
+    </script>
   </body>
 </html>
