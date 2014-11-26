@@ -34,11 +34,11 @@ echo $COMMAND
 
 START=$(date +"%s")
 (eval $COMMAND)
+EXITCODE=$?
 END=$(date +"%s")
 SECONDS=$(($END-$START))
 TIME="$(($SECONDS / 60)) min $(($SECONDS % 60)) sec"
 
-EXITCODE=$?
 if [ $EXITCODE -eq 0 ] ; then
     curl -u $token: https://api.pushbullet.com/v2/pushes -d type=note -d title="$1 SUCCESS ($TIME)" -d body="$COMMAND" > /dev/null 2>&1 &
 else
