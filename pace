@@ -45,3 +45,5 @@ else
     curl -u $token: https://api.pushbullet.com/v2/pushes -d type=note -d title="$1 FAIL ($TIME)" -d body="$COMMAND" > /dev/null 2>&1 &
 fi
 
+exit $EXITCODE
+
