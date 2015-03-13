@@ -40,10 +40,12 @@ SECONDS=$(($END-$START))
 TIME="$(($SECONDS / 60)) min $(($SECONDS % 60)) sec"
 
 if [ $EXITCODE -eq 0 ] ; then
-    curl -u $token: https://api.pushbullet.com/v2/pushes -d type=note --data-urlencode "title=$1 SUCCESS ($TIME)" --data-urlencode "body=$COMMAND" > /dev/null 2>&1 &
+    PUSH_TITLE="title=SUCCESS ($TIME): $1"
 else
-    curl -u $token: https://api.pushbullet.com/v2/pushes -d type=note --data-urlencode "title=$1 FAIL ($TIME)" --data-urlencode "body=$COMMAND" > /dev/null 2>&1 &
+    PUSH_TITLE="title=FAIL ($TIME): $1"
 fi
+
+curl -u $token: https://api.pushbullet.com/v2/pushes -d type=note --data-urlencode "$PUSH_TITLE" --data-urlencode "body=$COMMAND" > /dev/null 2>&1 &
 
 exit $EXITCODE
 
