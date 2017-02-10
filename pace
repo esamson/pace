@@ -45,7 +45,7 @@ else
     RESULT="FAIL"
 fi
 
-reattach-to-user-namespace osascript -e "display notification \"$COMMAND\" with title \"$1 $RESULT\" subtitle \"$TIME\"" &
+reattach-to-user-namespace osascript -e "display notification \"$COMMAND\" with title \"$1\" subtitle \"$RESULT $TIME\"" &
 
 PUSH_TITLE="$RESULT ($TIME): $1"
 curl -u $token: https://api.pushbullet.com/v2/pushes -d type=note --data-urlencode "title=$PUSH_TITLE" --data-urlencode "body=$COMMAND" > /dev/null 2>&1 &
